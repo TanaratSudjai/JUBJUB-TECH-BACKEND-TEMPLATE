@@ -13,11 +13,13 @@ export class Server {
     private app: Express;
     private port: string | number;
     private homeController: HomeController;
+    private routeLoader: RouteLoader;
 
     constructor() {
         this.app = express();
         this.port = process.env.PORT ?? '5001';
         this.homeController = new HomeController();
+        this.routeLoader = new RouteLoader();
     }
 
     public async initialize(): Promise<void> {
@@ -29,8 +31,7 @@ export class Server {
         this.app.use(express.static(path.join(__dirname, '..')));
 
         // 3. Load Routes
-        const routeLoader = new RouteLoader();
-        await routeLoader.loadRoutes(this.app);
+        await this.routeLoader.loadRoutes(this.app);
 
         // 4. Setup Home Page
         this.app.get('/', this.homeController.renderStatusPage);
