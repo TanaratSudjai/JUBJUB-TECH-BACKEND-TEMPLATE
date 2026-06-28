@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import express from 'express';
+import express, { type Express } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { connectDB } from './config/database.js';
@@ -9,26 +9,41 @@ import { HomeController } from './controllers/HomeController.js';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const app = express();
-const port = process.env.PORT ?? '5001';
+export class Server {
+    private app: Express;
+    private port: string | number;
+    private homeController: HomeController;
 
-// Connect to Database
-connectDB();
+    constructor() {
+        this.app = express();
+        this.port = process.env.PORT ?? '5001';
+        this.homeController = new HomeController();
+    }
 
-// Middleware
-app.use(express.json());
+    public async initialize(): Promise<void> {
+        // 1. Connect to Database
+        await connectDB();
 
-// Auto-load API Routes
-const routeLoader = new RouteLoader();
-await routeLoader.loadRoutes(app);
+        // 2. Setup Middleware
+        this.app.use(express.json());
+        this.app.use(express.static(path.join(__dirname, '..')));
 
-// Serve static files from the root directory so we can access start.png
-app.use(express.static(path.join(__dirname, '..')));
+        // 3. Load Routes
+        const routeLoader = new RouteLoader();
+        await routeLoader.loadRoutes(this.app);
 
-// render home controller for html 
-const homeController = new HomeController();
-app.get('/', homeController.renderStatusPage);
+        // 4. Setup Home Page
+        this.app.get('/', this.homeController.renderStatusPage);
+    }
 
-app.listen(port, () => {
-    console.log(`Server is running at http://localhost:${port}`);
-});
+    public start(): void {
+        this.app.listen(this.port, () => {
+            console.log(`Server is running at http://localhost:${this.port}`);
+        });
+    }
+}
+
+// Bootstrap
+const server = new Server();
+await server.initialize();
+server.start();
