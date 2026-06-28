@@ -22,7 +22,7 @@ export class Server {
         this.routeLoader = new RouteLoader();
     }
 
-    public async initialize(): Promise<void> {
+    public async startServer(): Promise<void> {
         // 1. Connect to Database
         await connectDB();
 
@@ -44,7 +44,6 @@ export class Server {
     }
 }
 
-// Bootstrap
 const server = new Server();
-await server.initialize();
+await server.startServer();
 server.start();
