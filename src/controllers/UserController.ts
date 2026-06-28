@@ -28,7 +28,7 @@ export class UserController {
                 this.responseHandler.ZOD_ERROR(res, error);
                 return;
             }
-            this.responseHandler.ERROR(res, 'Server Error', 500);
+            this.responseHandler.ERROR(res, 'Server Error');
         }
     };
 
@@ -48,7 +48,7 @@ export class UserController {
             }
             this.responseHandler.SUCCESS(res, user);
         } catch (error) {
-            this.responseHandler.ERROR(res, 'Server Error', 500);
+            this.responseHandler.ERROR(res, 'Server Error');
         }
     };
 
@@ -63,7 +63,7 @@ export class UserController {
             }
             this.responseHandler.SUCCESS(res, user);
         } catch (error) {
-            this.responseHandler.ERROR(res, 'Server Error', 500);
+            this.responseHandler.ERROR(res, 'Server Error');
         }
     };
 
@@ -83,7 +83,7 @@ export class UserController {
                 this.responseHandler.BAD_REQUEST(res, error.message);
                 return;
             }
-            this.responseHandler.ERROR(res, 'Server Error', 500);
+            this.responseHandler.ERROR(res, 'Server Error');
         }
     };
 }
