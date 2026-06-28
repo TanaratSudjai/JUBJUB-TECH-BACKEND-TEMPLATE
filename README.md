@@ -1,4 +1,4 @@
-# JUBJUB-TECH-BACKEND-TEMPLATE (ba-tung-backend)
+# JUBJUB-TECH-BACKEND-TEMPLATE 
 
 เทมเพลต Backend ที่พัฒนาด้วย **Node.js**, **Express**, และ **TypeScript** โดยมีการตั้งค่าเครื่องมือและไลบรารีพื้นฐานต่างๆ ไว้ให้เรียบร้อยแล้ว เช่น การเชื่อมต่อฐานข้อมูลและการตรวจสอบข้อมูล (Data Validation) เพื่อช่วยให้คุณสามารถเริ่มต้นพัฒนา Backend ได้อย่างรวดเร็ว
 
