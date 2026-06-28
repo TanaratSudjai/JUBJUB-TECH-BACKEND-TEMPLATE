@@ -87,4 +87,11 @@ public async findUserWithRole(id: number): Promise<UserWithRole | undefined> {
 }
 ```
 
+
+## 8. Complex Service Logic & Multiple Processes
+เมื่อ Service หนึ่งๆ มีการทำงานหลายขั้นตอน (เช่น เรียก Repository หลายตัว, นำข้อมูลมาคำนวณ, หรือมีเงื่อนไขซับซ้อน) ให้ปฏิบัติตาม Pattern ดังนี้:
+- **Keep Public Methods Clean (Orchestrator Role):** ฟังก์ชันหลัก (Public) ควรทำหน้าที่เป็นผู้จัดคิว (Orchestrator) เรียกใช้งาน Method ย่อยหรือ Repository ตามลำดับขั้นตอน เพื่อให้อ่านภาพรวม (Flow) ได้ง่าย ห้ามเขียนโค้ดยาวเกินไปในฟังก์ชันเดียว
+- **Extract to Private Methods:** หากมี Business Logic ที่ซับซ้อน หรือต้องเตรียมข้อมูลหลายส่วน ให้แยกโค้ดนั้นออกเป็น `private async` method ภายในคลาสเดียวกัน (ซ่อนความซับซ้อนไว้)
+- **Pure Functions to Utils:** หากส่วนที่ต้องคำนวณนั้นไม่มีความเกี่ยวข้องกับ Database หรือ State ภายใน (เช่น การคำนวณสูตรคณิตศาสตร์, จัด Format วันที่) ให้แยกโค้ดไปเป็นฟังก์ชันอิสระเก็บไว้ที่โฟลเดอร์ `src/utils/` หรือ `src/helpers/`
+
 </RULE[project_context]>
