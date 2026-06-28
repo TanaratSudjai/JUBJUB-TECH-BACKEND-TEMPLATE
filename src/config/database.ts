@@ -10,12 +10,16 @@ export const pool = new Pool({
     database: process.env.DB_NAME ?? 'ba_tung'
 });
 
+export let dbError: string | null = null;
+
 export const connectDB = async () => {
     try {
         const client = await pool.connect();
         console.log(`[DB] Connected to ${pool.options.database} at ${pool.options.host}`);
         client.release();
-    } catch (err) {
+        dbError = null;
+    } catch (err: any) {
         console.error('[DB] Connection error', err);
+        dbError = err.message || 'การเชื่อมต่อฐานข้อมูล มีปัญหาน๊า ไปแก้ที่ config/database.ts น๊าาา ~';
     }
 };
