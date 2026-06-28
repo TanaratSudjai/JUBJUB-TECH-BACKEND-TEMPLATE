@@ -10,5 +10,6 @@ const userController = new UserController();
 router.get('/', userController.getAllUsers);
 router.post('/register', userController.registerUser);
 router.get('/:id', userController.getUserById);
+router.get('/:id/role', userController.getUserWithRole);
 
 export default router;

@@ -50,6 +50,21 @@ export class UserController {
         }
     };
 
+    public getUserWithRole = async (req: Request, res: Response): Promise<void> => {
+        try {
+            const id = Number(req.params.id);
+            const user = await this.userService.getUserWithRole(id);
+
+            if (!user) {
+                ResponseHandler.NOT_FOUND(res, 'User or Role not found');
+                return;
+            }
+            ResponseHandler.SUCCESS(res, user);
+        } catch (error) {
+            ResponseHandler.ERROR(res, 'Server Error', 500);
+        }
+    };
+
     public registerUser = async (req: Request, res: Response): Promise<void> => {
         try {
             // Validate body

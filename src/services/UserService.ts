@@ -1,5 +1,5 @@
 import { UserRepository } from '../repositories/UserRepository.js';
-import type { User } from '../models/User.js';
+import type { User, UserWithRole } from '../models/User.js';
 import type { RegisterInput } from '../validations/userValidation.js';
 import bcrypt from 'bcrypt';
 
@@ -22,6 +22,14 @@ export class UserService {
             return null;
         }
         return user;
+    }
+
+    public async getUserWithRole(id: number): Promise<UserWithRole | null> {
+        const userWithRole = await this.userRepository.findUserWithRole(id);
+        if (!userWithRole) {
+            return null;
+        }
+        return userWithRole;
     }
 
     public async registerUser(data: RegisterInput): Promise<Omit<User, 'user_password'>> {

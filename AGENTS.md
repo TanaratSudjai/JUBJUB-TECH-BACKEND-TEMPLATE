@@ -52,4 +52,39 @@
 
 ## 6. Database Schema Context
 (อ้างอิงจาก `.agents/db-schema.md` สำหรับโครงสร้างล่าสุด)
+## 7. Data Joining Pattern (JOINs)
+เมื่อมีการดึงข้อมูลที่ต้อง JOIN มากกว่า 1 ตาราง ให้ปฏิบัติตามกฎดังนี้ (STRICT):
+- **Repository Location:**
+  - หากข้อมูลมีตารางหลัก (Aggregate Root) เป็นตัวตั้ง ให้เขียนคำสั่ง JOIN ภายใน Repository ของตารางหลักนั้นได้เลย (เช่น หยอดข้อมูล Role ใส่ User ให้เขียนใน `UserRepository`)
+  - หากเป็นการ Query ที่ซับซ้อนมากระดับ Dashboard/Report ที่โยงหลายตารางมั่วไปหมด ให้สร้าง Repository ใหม่แยกต่างหาก (เช่น `ReportRepository`)
+- **Type Safety สำหรับ JOIN:**
+  - **ห้าม** รีเทิร์นค่าออกมาเป็น `any`
+  - **ห้าม** รีเทิร์นเป็น Type เดิม (เช่น `User`) หากมีคอลัมน์ที่งอกมาจากการ JOIN (เช่น `role_name`)
+  - **ต้อง** สร้าง Interface ใหม่หรือ Extend จาก Interface เดิมมารองรับเสมอ
+
+**ตัวอย่างการเขียน (Example):**
+```typescript
+// src/models/User.ts
+export interface UserWithRole extends User {
+    role_name: string;
+}
+
+// src/repositories/UserRepository.ts
+public async findUserWithRole(id: number): Promise<UserWithRole | undefined> {
+    const result = await pool.query(
+        `
+        SELECT 
+            u.user_id, 
+            u.user_name, 
+            r.role_name 
+        FROM users u 
+        JOIN roles r ON u.role_id = r.role_id 
+        WHERE u.user_id = $1
+        `,
+        [id]
+    );
+    return result.rows[0];
+}
+```
+
 </RULE[project_context]>

@@ -1,4 +1,4 @@
-import type { User } from '../models/User.js';
+import type { User, UserWithRole } from '../models/User.js';
 import { pool } from '../config/database.js';
 
 export class UserRepository {
@@ -105,6 +105,35 @@ export class UserRepository {
                 created_at
             `,
             [user.user_name, user.user_email, user.user_password]
+        );
+        return result.rows[0];
+    }
+
+    public async findUserWithRole(id: number): Promise<UserWithRole | undefined> {
+        const result = await pool.query(
+            `
+            SELECT 
+                u.user_id, 
+                u.role_id,
+                u.user_name, 
+                u.user_email, 
+                u.user_phone, 
+                u.user_age, 
+                u.user_avatar, 
+                u.user_status, 
+                u.created_at, 
+                u.created_by, 
+                u.updated_at, 
+                u.updated_by, 
+                u.deleted_at, 
+                u.deleted_by,
+                r.role_name,
+                r.role_description
+            FROM users u 
+            JOIN roles r ON u.role_id = r.role_id 
+            WHERE u.user_id = $1
+            `,
+            [id]
         );
         return result.rows[0];
     }
