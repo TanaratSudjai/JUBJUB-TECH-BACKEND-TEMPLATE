@@ -8,6 +8,7 @@ const userController = new UserController();
 
 // กำหนด Endpoints
 router.get('/', userController.getAllUsers);
+router.post('/register', userController.registerUser);
 router.get('/:id', userController.getUserById);
 
 export default router;

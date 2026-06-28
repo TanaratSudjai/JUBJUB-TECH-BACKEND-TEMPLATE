@@ -1,4 +1,5 @@
 import type { Response } from 'express';
+import { z } from 'zod';
 
 export const ResponseHandler = {
     // 2xx Success Responses
@@ -25,6 +26,13 @@ export const ResponseHandler = {
     BAD_REQUEST: (res: Response, error: string = 'Bad Request') => {
         return res.status(400).json({
             error: error,
+            data: null
+        });
+    },
+    ZOD_ERROR: (res: Response, error: z.ZodError) => {
+        const message = error.issues?.[0]?.message || 'Validation Error';
+        return res.status(400).json({
+            error: message,
             data: null
         });
     },
