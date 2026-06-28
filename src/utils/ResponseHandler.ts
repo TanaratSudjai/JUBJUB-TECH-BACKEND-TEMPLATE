@@ -3,14 +3,14 @@ import { z } from 'zod';
 
 export class ResponseHandler {
     // 2xx Success Responses
-    public static SUCCESS(res: Response, data: any, statusCode: number = 200): Response {
+    public SUCCESS(res: Response, data: any, statusCode: number = 200): Response {
         return res.status(statusCode).json({
             error: null,
             data: data
         });
     }
 
-    public static CREATED(res: Response, data: any): Response {
+    public CREATED(res: Response, data: any): Response {
         return res.status(201).json({
             error: null,
             data: data
@@ -18,21 +18,21 @@ export class ResponseHandler {
     }
 
     // 4xx & 5xx Error Responses
-    public static ERROR(res: Response, error: string = 'Server Error', statusCode: number = 500): Response {
+    public ERROR(res: Response, error: string = 'Server Error', statusCode: number = 500): Response {
         return res.status(statusCode).json({
             error: error,
             data: null
         });
     }
 
-    public static BAD_REQUEST(res: Response, error: string = 'Bad Request'): Response {
+    public BAD_REQUEST(res: Response, error: string = 'Bad Request'): Response {
         return res.status(400).json({
             error: error,
             data: null
         });
     }
 
-    public static ZOD_ERROR(res: Response, error: z.ZodError): Response {
+    public ZOD_ERROR(res: Response, error: z.ZodError): Response {
         const message = error.issues?.[0]?.message || 'Validation Error';
         return res.status(400).json({
             error: message,
@@ -40,21 +40,21 @@ export class ResponseHandler {
         });
     }
 
-    public static UNAUTHORIZED(res: Response, error: string = 'Unauthorized'): Response {
+    public UNAUTHORIZED(res: Response, error: string = 'Unauthorized'): Response {
         return res.status(401).json({
             error: error,
             data: null
         });
     }
 
-    public static FORBIDDEN(res: Response, error: string = 'Forbidden'): Response {
+    public FORBIDDEN(res: Response, error: string = 'Forbidden'): Response {
         return res.status(403).json({
             error: error,
             data: null
         });
     }
 
-    public static NOT_FOUND(res: Response, error: string = 'Not Found'): Response {
+    public NOT_FOUND(res: Response, error: string = 'Not Found'): Response {
         return res.status(404).json({
             error: error,
             data: null

@@ -32,6 +32,7 @@
 - **Class-Based Architecture:** Controller, Service, และ Repository **ต้องเขียนในรูปแบบ Class เท่านั้น** ห้ามเขียนเป็นฟังก์ชันธรรมดา (Standalone Functions) หรือ Object Literal เด็ดขาด
 - **Access Modifiers:** ต้องระบุ `public`, `private`, หรือ `protected` ให้กับ Properties และ Methods อย่างชัดเจนเสมอ
 - **Dependency Injection (DI):** แนะนำให้ส่งผ่าน Dependency (เช่น ส่ง Repository เข้าไปใน Service ผ่าน Constructor) เพื่อให้ง่ายต่อการทดสอบและลดการผูกมัด (Coupling)
+- **No Static Calls for Imported Classes:** เมื่อมีการ Import Class ใดๆ เข้ามาใช้งาน (รวมถึง Utilities หรือ Helpers) **ต้องทำการสร้าง Instance (ด้วยคำสั่ง `new`) หรือ Inject ผ่าน Constructor ก่อนเสมอ** ห้ามเรียกใช้ Method แบบ Static ตรงๆ เด็ดขาด (เพื่อให้เป็น OOP ที่สมบูรณ์ 100%)
 - **Interface Contracts:** ควรมี Interface ควบคุมพฤติกรรมของ Class (เช่น `IUserService`, `IUserRepository`) เสมอ
 
 ## 4. STRICT Coding & Naming Conventions
@@ -93,5 +94,18 @@ public async findUserWithRole(id: number): Promise<UserWithRole | undefined> {
 - **Keep Public Methods Clean (Orchestrator Role):** ฟังก์ชันหลัก (Public) ควรทำหน้าที่เป็นผู้จัดคิว (Orchestrator) เรียกใช้งาน Method ย่อยหรือ Repository ตามลำดับขั้นตอน เพื่อให้อ่านภาพรวม (Flow) ได้ง่าย ห้ามเขียนโค้ดยาวเกินไปในฟังก์ชันเดียว
 - **Extract to Private Methods:** หากมี Business Logic ที่ซับซ้อน หรือต้องเตรียมข้อมูลหลายส่วน ให้แยกโค้ดนั้นออกเป็น `private async` method ภายในคลาสเดียวกัน (ซ่อนความซับซ้อนไว้)
 - **Pure Functions to Utils:** หากส่วนที่ต้องคำนวณนั้นไม่มีความเกี่ยวข้องกับ Database หรือ State ภายใน (เช่น การคำนวณสูตรคณิตศาสตร์, จัด Format วันที่) ให้แยกโค้ดไปเป็นฟังก์ชันอิสระเก็บไว้ที่โฟลเดอร์ `src/utils/` หรือ `src/helpers/`
+
+## 9. Database Transactions (Atomicity)
+หาก Service ใดมีการสั่ง `INSERT`, `UPDATE`, หรือ `DELETE` มากกว่า 1 คำสั่งย่อยใน Request เดียวกัน (เช่น บันทึกข้อมูลหลักและข้อมูลลูกพร้อมกัน) **ต้องบังคับใช้ Database Transaction (`BEGIN`, `COMMIT`, `ROLLBACK`) เสมอ**
+- ให้ Service เป็นคนจัดการ Logic เพื่อเรียก `COMMIT` หรือ `ROLLBACK` เมื่อเกิด Error (จับได้ใน `catch`)
+- จะต้องส่ง `client` (`pg.PoolClient`) ที่ดึงจาก `pool.connect()` ลงไปให้ Repository ใช้งาน เพื่อรับประกัน Data Integrity
+
+## 10. Pagination As A Standard
+API ใดๆ ที่มีการดึงข้อมูลออกมาเป็น Array (List/Collection) **บังคับว่าต้องมีการทำ Pagination (เช่น `page`, `limit`) เสมอ** ห้าม Query ข้อมูลแบบเหมาเข่งโดยไม่มีการทำ LIMIT เด็ดขาด เพื่อป้องกันปัญหา Memory เต็มและ Database Overload
+
+## 11. Environment Variables & Secrets (Security)
+- **ห้าม Hardcode ข้อมูลที่เป็นความลับ (Secrets)** เช่น `DB_PASSWORD`, `JWT_SECRET`, หรือ API Key ลงในโค้ดโดยเด็ดขาด 
+- ข้อมูลเหล่านี้ต้องดึงมาจาก `process.env` (เช่น `process.env.DB_PASSWORD`)
+- หากมีการเพิ่มตัวแปร Environment ใหม่ จะต้องไปอัปเดตใส่ไฟล์ `example.env` เสมอ เพื่อให้ทีมงานทราบว่าระบบต้องการตัวแปรอะไรบ้าง
 
 </RULE[project_context]>

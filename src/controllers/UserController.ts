@@ -8,9 +8,11 @@ import { registerSchema } from '../validations/userValidation.js';
 // ชั้นรับ Request จากฝั่ง Client และตอบ Response กลับไป
 export class UserController {
     private userService: UserService;
+    private responseHandler: ResponseHandler;
 
     constructor() {
         this.userService = new UserService();
+        this.responseHandler = new ResponseHandler();
     }
 
     // ต้องใช้ arrow function เพื่อป้องกันปัญหา this context loss
@@ -20,13 +22,13 @@ export class UserController {
             const query = paginationSchema.parse(req.query);
 
             const result = await this.userService.getAllUsers(query.page, query.limit);
-            ResponseHandler.SUCCESS(res, result);
+            this.responseHandler.SUCCESS(res, result);
         } catch (error) {
             if (error instanceof z.ZodError) {
-                ResponseHandler.ZOD_ERROR(res, error);
+                this.responseHandler.ZOD_ERROR(res, error);
                 return;
             }
-            ResponseHandler.ERROR(res, 'Server Error', 500);
+            this.responseHandler.ERROR(res, 'Server Error', 500);
         }
     };
 
@@ -41,12 +43,12 @@ export class UserController {
             const user = await this.userService.getUserById(id);
 
             if (!user) {
-                ResponseHandler.NOT_FOUND(res, 'User not found');
+                this.responseHandler.NOT_FOUND(res, 'User not found');
                 return;
             }
-            ResponseHandler.SUCCESS(res, user);
+            this.responseHandler.SUCCESS(res, user);
         } catch (error) {
-            ResponseHandler.ERROR(res, 'Server Error', 500);
+            this.responseHandler.ERROR(res, 'Server Error', 500);
         }
     };
 
@@ -56,12 +58,12 @@ export class UserController {
             const user = await this.userService.getUserWithRole(id);
 
             if (!user) {
-                ResponseHandler.NOT_FOUND(res, 'User or Role not found');
+                this.responseHandler.NOT_FOUND(res, 'User or Role not found');
                 return;
             }
-            ResponseHandler.SUCCESS(res, user);
+            this.responseHandler.SUCCESS(res, user);
         } catch (error) {
-            ResponseHandler.ERROR(res, 'Server Error', 500);
+            this.responseHandler.ERROR(res, 'Server Error', 500);
         }
     };
 
@@ -71,17 +73,17 @@ export class UserController {
             const body = registerSchema.parse(req.body);
 
             const result = await this.userService.registerUser(body);
-            ResponseHandler.CREATED(res, result);
+            this.responseHandler.CREATED(res, result);
         } catch (error) {
             if (error instanceof z.ZodError) {
-                ResponseHandler.ZOD_ERROR(res, error);
+                this.responseHandler.ZOD_ERROR(res, error);
                 return;
             }
             if (error instanceof Error && error.message === 'Email is already registered') {
-                ResponseHandler.BAD_REQUEST(res, error.message);
+                this.responseHandler.BAD_REQUEST(res, error.message);
                 return;
             }
-            ResponseHandler.ERROR(res, 'Server Error', 500);
+            this.responseHandler.ERROR(res, 'Server Error', 500);
         }
     };
 }

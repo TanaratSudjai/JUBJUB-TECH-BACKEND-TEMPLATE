@@ -7,7 +7,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export class RouteLoader {
-    public static async loadRoutes(app: Express): Promise<void> {
+    public async loadRoutes(app: Express): Promise<void> {
         // อ้างอิง Path ไปที่โฟลเดอร์ ../routes เพราะไฟล์นี้อยู่ในโฟลเดอร์ utils
         const routesPath = path.join(__dirname, '..', 'routes');
         const routeFiles = fs.readdirSync(routesPath).filter((file: string) => file.endsWith('.ts') || file.endsWith('.js'));

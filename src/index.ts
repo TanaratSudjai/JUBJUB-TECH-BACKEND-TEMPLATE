@@ -19,13 +19,15 @@ connectDB();
 app.use(express.json());
 
 // Auto-load API Routes
-await RouteLoader.loadRoutes(app);
+const routeLoader = new RouteLoader();
+await routeLoader.loadRoutes(app);
 
 // Serve static files from the root directory so we can access start.png
 app.use(express.static(path.join(__dirname, '..')));
 
 // render home controller for html 
-app.get('/', HomeController.renderStatusPage);
+const homeController = new HomeController();
+app.get('/', homeController.renderStatusPage);
 
 app.listen(port, () => {
     console.log(`Server is running at http://localhost:${port}`);
