@@ -1,5 +1,6 @@
 import type { Request, Response } from 'express';
 import { UserService } from '../services/UserService.js';
+import { ResponseHandler } from '../utils/ResponseHandler.js';
 
 // ชั้นรับ Request จากฝั่ง Client และตอบ Response กลับไป
 export class UserController {
@@ -13,9 +14,9 @@ export class UserController {
     public getAllUsers = async (req: Request, res: Response): Promise<void> => {
         try {
             const users = await this.userService.getAllUsers();
-            res.status(200).json({ error: null, data: users });
+            ResponseHandler.SUCCESS(res, users);
         } catch (error) {
-            res.status(500).json({ error: 'Server Error', data: null });
+            ResponseHandler.ERROR(res, 'Server Error', 500);
         }
     };
 
@@ -30,12 +31,12 @@ export class UserController {
             const user = await this.userService.getUserById(id);
 
             if (!user) {
-                res.status(404).json({ error: 'User not found', data: null });
+                ResponseHandler.NOT_FOUND(res, 'User not found');
                 return;
             }
-            res.status(200).json({ error: null, data: user });
+            ResponseHandler.SUCCESS(res, user);
         } catch (error) {
-            res.status(500).json({ error: 'Server Error', data: null });
+            ResponseHandler.ERROR(res, 'Server Error', 500);
         }
     };
 }
