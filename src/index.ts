@@ -22,7 +22,7 @@ export class Server {
         this.routeLoader = new RouteLoader();
     }
 
-    public async startServer(): Promise<void> {
+    public async serverSetup(): Promise<void> {
         // 1. Connect to Database
         await connectDB();
 
@@ -37,7 +37,7 @@ export class Server {
         this.app.get('/', this.homeController.renderStatusPage);
     }
 
-    public start(): void {
+    public serverStart(): void {
         this.app.listen(this.port, () => {
             console.log(`Server is running at http://localhost:${this.port}`);
         });
@@ -45,5 +45,5 @@ export class Server {
 }
 
 const server = new Server();
-await server.startServer();
-server.start();
+await server.serverSetup();
+server.serverStart();
