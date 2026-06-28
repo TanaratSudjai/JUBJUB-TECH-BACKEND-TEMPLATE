@@ -9,9 +9,9 @@ export class UserService {
         this.userRepository = new UserRepository();
     }
 
-    public async getAllUsers(): Promise<User[]> {
+    public async getAllUsers(page: number, limit: number): Promise<{ users: User[], total: number }> {
         // อาจจะมีการกรองข้อมูลหรือประมวลผลเพิ่มเติมตรงนี้
-        return await this.userRepository.findAll();
+        return await this.userRepository.findAll(page, limit);
     }
 
     public async getUserById(id: number): Promise<User | null> {
