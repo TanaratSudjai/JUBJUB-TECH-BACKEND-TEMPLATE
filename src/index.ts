@@ -1,11 +1,11 @@
 import 'dotenv/config';
-import express, { type Express } from 'express';
+import express, { type Express, type Request, type Response } from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { connectDB } from './config/database.js';
 import { RouteLoader } from './utils/routeLoader.js';
 import { HomeController } from './controllers/HomeController.js';
-
+import process from 'process';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
