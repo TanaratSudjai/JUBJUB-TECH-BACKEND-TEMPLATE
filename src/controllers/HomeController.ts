@@ -5,7 +5,7 @@ export class HomeController {
     public renderStatusPage = (req: Request, res: Response): void => {
         const statusMessage = dbError
             ? `<p style="color: red; font-weight: bold; font-size: 1.5rem;">Database Error: ${dbError}</p>`
-            : `<p style="color: green; font-weight: bold; font-size: 1.5rem;">BACKEND SERVER RUNNING เเล้วจ๊าาาาา ~</p>`;
+            : `<p style="color: green; font-weight: bold; font-size: 1.5rem;">SERVER RUNNING เเล้วจ๊าาาาา ~</p>`;
 
         const imageSrc = dbError ? "/error.png" : "/start.png";
 
