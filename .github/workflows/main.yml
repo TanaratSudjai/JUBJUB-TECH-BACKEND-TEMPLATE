@@ -18,6 +18,7 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
           script: |
+            su - dev-ops << 'EOF'
             cd /var/www/JUBJUB-TECH-BACKEND-TEMPLATE
 
             git fetch origin
@@ -28,3 +29,4 @@ jobs:
             docker compose up -d --build
 
             docker image prune -f
+            EOF
