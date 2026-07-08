@@ -1,4 +1,4 @@
-name: Deploy VPS
+name: Deploy Backend Template
 
 on:
   push:
@@ -10,8 +10,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-
       - name: Deploy to VPS
         uses: appleboy/ssh-action@v1.2.0
         with:
@@ -19,14 +17,13 @@ jobs:
           username: ${{ secrets.USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.PORT }}
-
           script: |
-            cd /home/dev-ops/my-project
+            cd /var/www/JUBJUB-TECH-BACKEND-TEMPLATE
 
-            git pull origin main
+            git fetch origin
+            git reset --hard origin/main
 
             docker compose down
-
-            docker compose pull
-
             docker compose up -d --build
+
+            docker image prune -f
