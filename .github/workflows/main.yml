@@ -1,4 +1,4 @@
-name: Deploy Backend Template
+name: Deploy Backend Template V1
 
 on:
   push:
