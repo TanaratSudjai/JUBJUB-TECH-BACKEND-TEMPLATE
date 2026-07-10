@@ -1,40 +1,51 @@
-# JUBJUB-TECH-BACKEND-TEMPLATE 
+# Create Thod Full Dev (Backend Template)
 
-เทมเพลต Backend ที่พัฒนาด้วย **Node.js**, **Express**, และ **TypeScript** โดยมีการตั้งค่าเครื่องมือและไลบรารีพื้นฐานต่างๆ ไว้ให้เรียบร้อยแล้ว เช่น การเชื่อมต่อฐานข้อมูลและการตรวจสอบข้อมูล (Data Validation) เพื่อช่วยให้คุณสามารถเริ่มต้นพัฒนา Backend ได้อย่างรวดเร็ว
+เทมเพลต Backend ที่พัฒนาด้วย **Node.js**, **Express**, และ **TypeScript** โดยมีการตั้งค่าเครื่องมือและไลบรารีพื้นฐานต่างๆ ไว้ให้เรียบร้อยแล้ว เช่น การเชื่อมต่อฐานข้อมูล (PostgreSQL) และการตรวจสอบข้อมูล (Data Validation ด้วย Zod) เพื่อช่วยให้คุณสามารถเริ่มต้นพัฒนาโปรเจกต์ใหม่ได้อย่างรวดเร็ว
 
 ## Tech Stack
 
 - **Node.js & Express.js**: เฟรมเวิร์กสำหรับสร้าง Web API ที่มีความรวดเร็วและใช้งานง่าย
 - **TypeScript**: ส่วนขยายของ JavaScript ที่มีการระบุชนิดตัวแปร (Type) ช่วยลดข้อผิดพลาดในการเขียนโค้ด
 - **PostgreSQL (pg)**: ระบบจัดการฐานข้อมูลแบบเชิงสัมพันธ์ (Relational Database)
-- **Zod**: ไลบรารีสำหรับสร้าง Schema และทำ Data Validation สำหรับ TypeScript
-- **Nodemon**: เครื่องมือที่ช่วยรีสตาร์ทเซิร์ฟเวอร์โดยอัตโนมัติเมื่อมีการบันทึกไฟล์
+- **Zod**: ไลบรารีสำหรับสร้าง Schema และทำ Data Validation
+- **Nodemon**: เครื่องมือที่ช่วยรีสตาร์ทเซิร์ฟเวอร์โดยอัตโนมัติเมื่อมีการแก้ไขโค้ด
 
-## โครงสร้างโปรเจกต์ (Project Structure)
+---
 
-- `src/` - เก็บซอร์สโค้ดหลักของแอปพลิเคชัน
-  - `config/` - การตั้งค่าต่างๆ เช่น การเชื่อมต่อฐานข้อมูล
-  - `routes/` - จัดการ Route ของ API (เช่น User routes)
-  - `index.ts` - ไฟล์หลักสำหรับรันแอปพลิเคชัน
+## การติดตั้งและการเริ่มต้นโปรเจกต์ใหม่ (Installation)
 
-## สิ่งที่ต้องมีก่อนติดตั้ง (Prerequisites)
+คุณไม่จำเป็นต้อง Clone โปรเจกต์นี้ด้วยตัวเองอีกต่อไป เพียงแค่ใช้คำสั่ง `npx` เพื่อสร้างโปรเจกต์ใหม่:
 
-ก่อนเริ่มต้นใช้งานโปรเจกต์ โปรดตรวจสอบว่าคุณได้ติดตั้งซอฟต์แวร์เหล่านี้แล้ว:
-- [Node.js](https://nodejs.org/) (แนะนำให้ใช้เวอร์ชัน 16 หรือสูงกว่า)
-- [PostgreSQL](https://www.postgresql.org/)
+```bash
+npx create-thod-full-dev <ชื่อโปรเจกต์ของคุณ>
+```
 
-## การติดตั้ง (Installation)
+ระบบจะทำการสร้างโฟลเดอร์ คัดลอกเทมเพลต และติดตั้ง Dependencies ต่างๆ ให้โดยอัตโนมัติ จากนั้นให้รันคำสั่ง:
 
-1. Clone โปรเจกต์ลงมาที่เครื่องของคุณ:
-   ```bash
-   git clone https://github.com/TanaratSudjai/JUBJUB-TECH-BACKEND-TEMPLATE.git
-   cd train-jubjub-backend
-   ```
+```bash
+cd <ชื่อโปรเจกต์ของคุณ>
+npm run dev
+```
 
-2. ติดตั้ง Dependencies ต่างๆ:
-   ```bash
-   npm install
-   ```
+เซิร์ฟเวอร์จะรันอยู่ที่ `http://localhost:5001` (หรือพอร์ตที่คุณตั้งในไฟล์ `.env`) คุณสามารถเปิดดูในเบราว์เซอร์เพื่อตรวจสอบหน้า Welcome Page ได้
+
+---
+
+## การตั้งค่า Environment Variables
+
+หลังจากสร้างโปรเจกต์เสร็จ ระบบจะคัดลอกไฟล์ `example.env` เป็นไฟล์ `.env` ให้โดยอัตโนมัติ ให้คุณเข้าไปแก้ไขไฟล์ `.env` เพื่อตั้งค่าการเชื่อมต่อ Database ของคุณ:
+
+```ini
+DB_HOST=127.0.0.1
+DB_USER=your_db_username
+DB_PASSWORD=your_db_password
+DB_NAME=your_db_name
+DB_PORT=5432
+PORT=5001
+```
+*(ห้าม Commit ไฟล์ `.env` ขึ้น Git เด็ดขาด)*
+
+---
 
 ## การรันโปรเจกต์ (Running the Project)
 
@@ -50,26 +61,20 @@ npm run dev
 npm start
 ```
 
-เซิร์ฟเวอร์จะรันอยู่ที่ `http://localhost:3000` คุณสามารถเปิดดูในเบราว์เซอร์เพื่อตรวจสอบหน้า Welcome Page ได้
+---
 
-## API Endpoints พื้นฐาน
+## โครงสร้างโปรเจกต์ (Project Structure)
 
-- `GET /` : หน้า HTML เบื้องต้นสำหรับทดสอบว่าเซิร์ฟเวอร์ทำงานอยู่
-- `GET /api/users` : Route หลักสำหรับการจัดการข้อมูล User
-
-## การตั้งค่า Environment Variables
-
-โปรเจกต์นี้ใช้ไฟล์ `.env` สำหรับเก็บค่าคอนฟิกต่างๆ ให้สร้างไฟล์ `.env` ไว้ที่ Root ของโปรเจกต์ (ระดับเดียวกับ `package.json`) และใส่ค่าเหล่านี้:
-
-```ini
-DB_HOST=127.0.0.1
-DB_USER=your_db_username
-DB_PASSWORD=your_db_password
-DB_NAME=your_db_name
-DB_PORT=5432
-PORT=5001
-```
-*(ห้าม Commit ไฟล์ `.env` ขึ้น Git เด็ดขาด)*
+- `bin/` - สคริปต์สำหรับระบบ `create-thod-full-dev`
+- `src/` - เก็บซอร์สโค้ดหลักของแอปพลิเคชัน
+  - `config/` - การตั้งค่าต่างๆ เช่น การเชื่อมต่อฐานข้อมูล
+  - `controllers/` - ชั้นรับ Request และจัดการ Response
+  - `services/` - ชั้นที่เก็บ Business Logic ทั้งหมด
+  - `repositories/` - ชั้นสำหรับติดต่อฐานข้อมูล (Query)
+  - `models/` - TypeScript Interface / Types
+  - `validations/` - Zod Schemas
+  - `routes/` - จัดการ Route ของ API (Auto-loaded)
+  - `index.ts` - ไฟล์หลักสำหรับรันแอปพลิเคชัน
 
 ---
 
@@ -98,7 +103,7 @@ export class ProductRepository {
 ### 3. สร้าง Service (`src/services/`)
 - สร้างไฟล์ Class เพื่อจัดการ **Business Logic** ทั้งหมด
 - เรียกใช้งาน Repository ภายใน Class นี้
-- **ข้อห้าม:** ห้ามุ่งเกี่ยวกับ `req` หรือ `res` ในชั้นนี้ หากเกิดข้อผิดพลาดให้โยน Error (`throw new Error(...)`) กลับไป
+- **ข้อห้าม:** ห้ามยุ่งเกี่ยวกับ `req` หรือ `res` ในชั้นนี้ หากเกิดข้อผิดพลาดให้โยน Error (`throw new Error(...)`) กลับไป
 ```typescript
 import { ProductRepository } from '../repositories/ProductRepository.js';
 

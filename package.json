@@ -1,7 +1,10 @@
 {
-  "name": "ba-tung-backend",
+  "name": "create-thod-full-dev",
   "version": "1.0.0",
   "main": "index.js",
+  "bin": {
+    "create-thod-full-dev": "./bin/cli.js"
+  },
   "type": "module",
   "scripts": {
     "start": "node --loader ts-node/esm src/index.ts",

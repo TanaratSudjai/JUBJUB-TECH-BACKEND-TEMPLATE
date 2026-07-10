@@ -4,8 +4,6 @@ import { UserService } from '../services/UserService.js';
 import { ResponseHandler } from '../utils/ResponseHandler.js';
 import { paginationSchema } from '../validations/commonValidation.js';
 
-
-// ชั้นรับ Request จากฝั่ง Client และตอบ Response กลับไป
 export class UserController {
     private userService: UserService;
     private responseHandler: ResponseHandler;
@@ -15,10 +13,8 @@ export class UserController {
         this.responseHandler = new ResponseHandler();
     }
 
-    // ต้องใช้ arrow function เพื่อป้องกันปัญหา this context loss
     public getAllUsers = async (req: Request, res: Response): Promise<void> => {
         try {
-            // Validate data using Zod
             const query = paginationSchema.parse(req.query);
 
             const result = await this.userService.getAllUsers(query.page, query.limit);

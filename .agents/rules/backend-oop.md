@@ -1,3 +1,7 @@
+---
+trigger: always_on
+---
+
 <RULE[project_context]>
 # Project Agent Role & Coding Standards (Jubjub Backend)
 
