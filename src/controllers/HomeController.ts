@@ -5,7 +5,7 @@ export class HomeController {
     public renderStatusPage = (req: Request, res: Response): void => {
         const statusMessage = dbError
             ? `<h1 class="main-text error-text">Database Error</h1><p class="sub-text">${dbError}</p>`
-            : `<h1 class="main-text success-text">ระบบหลังบ้าน พร้อมสำหรับผู้เข้าร่วมเเล้ว</h1><p class="sub-text">JubJub Tech API Service is up and running.</p>`;
+            : `<h1 class="main-text success-text">ระบบ API พร้อมสำหรับผู้เข้าร่วมเเล้ว</h1><p class="sub-text">JubJub Tech API Service is up and running.</p>`;
 
         const imageSrc = dbError ? "/error.png" : "/start.png";
 
